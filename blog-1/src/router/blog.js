@@ -1,9 +1,10 @@
-const {getList, getDetail,newBlog } = require('../controller/blog')
+const {getList, getDetail,newBlog,updateBlog  } = require('../controller/blog')
 const {SuccessModel, ErrorModel} = require('../model/resModel')
 
 const handleBlogRouter =(req, res) => {
      const method = req.method
-     
+     // id提到上面 
+     const id = req.query.id
      // get blog list
      if (method === "GET" && req.path ==="/api/blog/list"){
          const author = req.query.author || ''
@@ -13,7 +14,7 @@ const handleBlogRouter =(req, res) => {
      }
      // get blog detail
      if (method ==="GET" && req.path === "/api/blog/detail"){
-         const id = req.query.id
+          
          const data = getDetail(id)
          return new SuccessModel(data)
      }
@@ -26,8 +27,11 @@ const handleBlogRouter =(req, res) => {
 
      // update a blog
      if (method === "POST" && req.path === "/api/blog/update"){
-        return {
-            msg: "this is update a blog api"
+        const result = updateBlog(id, req.body)
+        if (result) {
+            return new SuccessModel
+        } else {
+            return new ErrorModel('更新博客失败')
         }
     }
 
