@@ -1,21 +1,16 @@
+const {exec} = require('../db/mysql')
 const getList = (author, keyword) => {
     // 数据格式
-    return [
-        {
-            id: 1,
-            title: 'titleA',
-            content: 'contentA',
-            createTime: 1546610491112,
-            author: 'charlie'
-        },
-        {
-            id: 2,
-            title: 'titleB',
-            content: 'contentB',
-            createTime: 1546610524373,
-            author: 'chris'
-        }
-    ]
+    let sql = `select * from blogs where 1=1 `
+    if (author) {
+        sql += `and author='${author}' `
+    }
+    if (keyword) {
+         sql += `and title like '%${keyword}%' `
+    }
+    sql += `order by createtime desc;`
+     //返回的promise 
+    return exec(sql)
 }
 
 const getDetail = (id) => {
