@@ -19,8 +19,12 @@ const handleBlogRouter =(req, res) => {
      // get blog detail
      if (method ==="GET" && req.path === "/api/blog/detail"){
           
-         const data = getDetail(id)
-         return new SuccessModel(data)
+        //  const data = getDetail(id)
+        //  return new SuccessModel(data)
+        const result = getDetail(id)
+        return result.then(data=> {
+            return new SuccessModel(data)
+        })
      }
 
      // create new blog
