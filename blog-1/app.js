@@ -52,6 +52,9 @@ const serverHandle = (req,res) => {
     //     return
     // }
  //blogData 直接返回结果值， blogResult 返回的是promise
+
+
+
     const blogResult  = handleBlogRouter(req,res)
     if (blogResult) {
         blogResult.then(blogData=> {
@@ -62,13 +65,28 @@ const serverHandle = (req,res) => {
         return 
     }
         // 处理 user router
-    const userData = handleUserRouter(req,res)
-    if(userData){
-        res.end(
-            JSON.stringify(userData)
-        )
+    // const userData = handleUserRouter(req,res)
+    // if(userData){
+    //     res.end(
+    //         JSON.stringify(userData)
+    //     )
+    //     return
+    // }
+
+    // handleUserRouter 返回的是promise
+     const userResult = handleUserRouter(req,res)
+    
+     if (userResult){
+       
+        userResult.then(userData=> {
+           
+            //Promise { SuccessModel { errno: 0 } }
+            res.end(
+                JSON.stringify(userData)
+            )   
+        })
         return
-    }
+     }
 
     // 未命中api ， 404
     res.writeHead(404, {"Content-type": "text/plain"})
