@@ -61,10 +61,31 @@ const newBlog = (blogData = {})=> {
 }
 
 const updateBlog =(id, blogData = {})=> {
-
-    console.log('update blog...',id,  blogData)
-   return true
-}
+    // return true
+   const title = blogData.title
+   const content = blogData.content 
+   const sql = `
+        update blogs set title = '${title}', content='${content}' where id = ${id}
+   `
+    return exec(sql).then(updateData=>{
+        console.log('updateData is...', updateData)
+        // updateData is... OkPacket {
+        //     fieldCount: 0,
+        //     affectedRows: 1,
+        //     insertId: 0,
+        //     serverStatus: 2,
+        //     warningCount: 0,
+        //     message: '(Rows matched: 1  Changed: 1  Warnings: 0',
+        //     protocol41: true,
+        //     changedRows: 1
+        //   }
+        if (updateData.affectedRows > 0) {
+            return true
+        }
+        return false
+    })
+   
+} 
 
 const delBlog =(id)=> {
     return true
