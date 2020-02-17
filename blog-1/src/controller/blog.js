@@ -79,7 +79,7 @@ const updateBlog =(id, blogData = {})=> {
         //     protocol41: true,
         //     changedRows: 1
         //   }
-        if (updateData.affectedRows > 0) {
+        if (updateData.affectedRows >0){
             return true
         }
         return false
@@ -87,8 +87,18 @@ const updateBlog =(id, blogData = {})=> {
    
 } 
 
-const delBlog =(id)=> {
-    return true
+const delBlog =(id,author)=> {
+    //return true
+    const sql = `
+        delete from blogs where id =${id} and author = '${author}';
+    `
+    return exec(sql).then(deleteData=> {
+        if (deleteData.affectedRows >0){
+            return true
+        }
+        return false
+    
+    })
 }
 module.exports = {
     getList,
