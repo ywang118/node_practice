@@ -29,8 +29,20 @@ const handleBlogRouter =(req, res) => {
 
      // create new blog
      if (method === "POST" && req.path === "/api/blog/new"){
-         const data = newBlog(req.body)
-         return new SuccessModel(data)
+        //  const data = newBlog(req.body)
+        //  return new SuccessModel(data)
+        
+         const author = 'zhangsan' // 假数据，待开发登录时再改成真实数据
+         req.body.author= author
+         //req.body: body: { title: '老人与海', content: '老人与海100', author: 'zhangsan' }
+         const result = newBlog(req.body)
+         
+         return result.then(data=> {
+             //data 里是newid { id: 5 }
+             console.log('data is ...,', data)
+             return new SuccessModel(data)
+            
+         })
      }
 
      // update a blog

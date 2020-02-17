@@ -29,12 +29,35 @@ const getDetail = (id) => {
 }
 
 const newBlog = (blogData = {})=> {
-    //blogData 是一个博客对象， 包含 title， content 属性
-
-    console.log('newBlog blogData....',blogData )
-    return {
-        id : 3
-    }
+    //blogData 是一个博客对象， 包含 title， content author属性
+    // 返回的是新建博客插入到 数据表的id   
+    const title = blogData.title
+    const content = blogData.content 
+    const author = blogData.author
+    const createTime = Date.now()
+    const sql = `
+        insert into blogs(title, content, createtime, author) 
+        values('${title}', '${content}', ${createTime},'${author}');
+        
+    `
+    return exec(sql).then(insertData=> {
+        console.log('insertData is.... ',insertData)
+        // insertData is....  OkPacket {
+        //     fieldCount: 0,
+        //     affectedRows: 1,
+        //     insertId: 3,
+        //     serverStatus: 2,
+        //     warningCount: 0,
+        //     message: '',
+        //     protocol41: true,
+        //     changedRows: 0
+        //   }
+          
+        return {
+            id: insertData.insertId
+        }
+    })
+   
 }
 
 const updateBlog =(id, blogData = {})=> {
