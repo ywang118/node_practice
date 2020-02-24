@@ -1,3 +1,4 @@
+const xss = require('xss')
 const {exec} = require('../db/mysql')
 const getList = (author, keyword) => {
     // 数据格式
@@ -31,7 +32,8 @@ const getDetail = (id) => {
 const newBlog = (blogData = {})=> {
     //blogData 是一个博客对象， 包含 title， content author属性
     // 返回的是新建博客插入到 数据表的id   
-    const title = blogData.title
+    const title = xss(blogData.title)
+    
     const content = blogData.content 
     const author = blogData.author
     const createTime = Date.now()
