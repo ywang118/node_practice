@@ -6,6 +6,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 // 记录access log
 var logger = require('morgan');
+const session = require('express-session')
+const RedisStore = require('connect-redis')(session)
 
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
@@ -26,8 +28,22 @@ app.use(express.json());
 //post数据兼容其他的格式
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 // app.use(express.static(path.join(__dirname, 'public')));
+
+const redisClient = require('./db/redis')
+const sessionStore = new RedisStore({
+  client: redisClient
+})
+// 每次生成http请求 就有了session的值
+app.use(session({
+  secret: 'WJiol#23123_',
+  cookie: {
+    path: '/',   //默认配置
+    httpOnly: true,   // 前端js无法访问cookie，默认配置
+    maxAge: 24 * 60 * 60 * 1000
+  },
+  store: sessionStore //sesion 存在redis里面
+}))
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);

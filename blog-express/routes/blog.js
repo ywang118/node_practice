@@ -8,7 +8,7 @@ router.get('/list', function(req, res, next) {
     const keyword = req.query.keyword || ''
 
 
-//    if (req.query.isadmin){
+   if (req.query.isadmin){
 //        //管理员界面
 //        const loginCheckResult = loginCheck(req)
 //        if (loginCheckResult){
@@ -16,8 +16,8 @@ router.get('/list', function(req, res, next) {
 //            return loginCheckResult
 //        }
 //        //强制查询自己的博客
-//        author = req.session.username
-//    }
+       author = req.session.username
+   }
 
    const result = getList(author,keyword)
    return result.then(listData => {
