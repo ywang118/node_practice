@@ -2,6 +2,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var fs = require('fs');
 // 解析cookie
 var cookieParser = require('cookie-parser');
 // 记录access log
@@ -21,8 +22,23 @@ var app = express();
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
 
+
 // 通过配置，自动生成日志
-app.use(logger('dev'));
+const ENV = process.env.NODE_ENV
+if (ENV !== 'production'){
+  //开发环境 或 测试环境
+  app.use(logger('dev'));
+} else {
+  //线上环境
+  const logFileName = path.join(__dirname, 'logs','access.log')
+  const writeStream = fs.createWriteStream(logFileName, {
+    flags: 'a'
+  })
+  app.use(logger('combined',{
+    stream: writeStream
+  }));
+}
+
 //处理 post 请求 content-type 是 json的格式
 app.use(express.json());
 //post数据兼容其他的格式
